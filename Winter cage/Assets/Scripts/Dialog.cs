@@ -4,6 +4,11 @@ using UnityEngine;
 
     public class Dialog : MonoBehaviour
     {
-        public List<string> speaker,phraze; 
+    public List<AudioSource> audioSources;
+    
+    public List<string> phraze;
+    public List<int> indexesOfSpeak;
+        
+
         public float speedRatio=1f;
     }
