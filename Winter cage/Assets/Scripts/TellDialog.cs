@@ -17,26 +17,22 @@ public class TellDialog : MonoBehaviour
         Transform camTr = player.transform.GetChild(0);
         //rot to speaker
         Vector3 direction = transform.position - player.transform.position;
-        direction.y = 0;
-        Vector3 camDirection = transform.position - camTr.position;
-        camDirection.x = 0;
-        camDirection.y = 0;
 
-        // Обчислення кінцевої ротації
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
-        Quaternion camTargetRotation = Quaternion.LookRotation(camDirection);
+        Quaternion targetRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+        Quaternion camTargetRotation = Quaternion.LookRotation(new Vector3(0,direction.y,new Vector2(direction.x,direction.z).magnitude));
 
         // Плавний перехід до кінцевої ротації
-        for (float t = 0; t < 2; t += Time.deltaTime)
+        for (float t = 0; t < 3; t += Time.deltaTime)
         {
             yield return null;
+
             player.transform.rotation = Quaternion.Lerp(player.transform.rotation, targetRotation, 7 * Time.deltaTime);
-            camTr.rotation = Quaternion.Lerp(camTr.rotation, camTargetRotation, 3 * Time.deltaTime);
+
+            camTr.localRotation = Quaternion.Lerp(camTr.localRotation, camTargetRotation, 3 * Time.deltaTime);
         }
 
 
 
-        yield return new WaitForSeconds(1);
         for (int i = 0; i < dialog.phraze.Count; i++)
         {
             dialogWind.text = dialog.audioSources[dialog.indexesOfSpeak[i]].gameObject.name+ " : ";
